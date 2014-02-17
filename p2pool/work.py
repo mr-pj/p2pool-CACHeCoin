@@ -92,15 +92,14 @@ class WorkerBridge(worker_interface.WorkerBridge):
                 print 'Skipping from block %x to block %x!' % (bb['previous_block'],
                     #bitcoin_data.hash256(bitcoin_data.block_header_type.pack(bb)))
                     self.node.net.PARENT.BLOCKHASH_FUNC(bitcoin_data.block_header_type.pack(bb)))
+                    #previous_block=bitcoin_data.hash256(bitcoin_data.block_header_type.pack(bb)),
                 t = dict(
                     version=bb['version'],
-                    #previous_block=bitcoin_data.hash256(bitcoin_data.block_header_type.pack(bb)),
                     previous_block=self.node.net.PARENT.BLOCKHASH_FUNC(bitcoin_data.block_header_type.pack(bb)),
                     bits=bb['bits'], # not always true
                     coinbaseflags='',
                     height=t['height'] + 1,
-                    #time=bb['timestamp'] + 600, # better way?
-					time=t['time'] + 600, # better way?
+                    time=bb['timestamp'] + 600, # better way?
                     transactions=[],
                     transaction_fees=[],
 					txn_timestamp=0,
