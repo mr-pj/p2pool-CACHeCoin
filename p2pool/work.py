@@ -102,6 +102,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
                     time=bb['timestamp'] + 600, # better way?
                     transactions=[],
                     transaction_fees=[],
+					txn_timestamp=0,
                     merkle_link=bitcoin_data.calculate_merkle_link([None], 0),
                     subsidy=self.node.net.PARENT.SUBSIDY_FUNC(self.node.bitcoind_work.value['height']),
                     last_update=self.node.bitcoind_work.value['last_update'],
@@ -223,6 +224,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
         
         tx_hashes = [bitcoin_data.hash256(bitcoin_data.tx_type.pack(tx)) for tx in self.current_work.value['transactions']]
         tx_map = dict(zip(tx_hashes, self.current_work.value['transactions']))
+		txn_timestamp = self.current_work.value['txn_timestamp']
         
         previous_share = self.node.tracker.items[self.node.best_share_var.value] if self.node.best_share_var.value is not None else None
         if previous_share is None:
