@@ -232,9 +232,9 @@ nets = dict(
 
     cachecoin=math.Object(
         P2P_PREFIX='d9e6e7e5'.decode('hex'),
-        P2P_PORT=5334,
+        P2P_PORT=2334,
         ADDRESS_VERSION=28,
-        RPC_PORT=5332,
+        RPC_PORT=2332,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
             'cachecoinaddress' in (yield bitcoind.rpc_help()) and
             not (yield bitcoind.rpc_getinfo())['testnet']
