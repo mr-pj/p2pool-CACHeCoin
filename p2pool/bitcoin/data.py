@@ -2,7 +2,6 @@ from __future__ import division
 
 import hashlib
 import random
-import warnings
 
 import p2pool
 from p2pool.util import math, pack
@@ -93,7 +92,7 @@ address_type = pack.ComposedType([
 
 tx_type = pack.ComposedType([
     ('version', pack.IntType(32)),
-	('timestamp', pack.IntType(32)),
+    ('timestamp', pack.IntType(32)),
     ('tx_ins', pack.ListType(pack.ComposedType([
         ('previous_output', pack.PossiblyNoneType(dict(hash=0, index=2**32 - 1), pack.ComposedType([
             ('hash', pack.IntType(256)),
@@ -132,7 +131,7 @@ block_header_type = pack.ComposedType([
 block_type = pack.ComposedType([
     ('header', block_header_type),
     ('txs', pack.ListType(tx_type)),
-	('signature', pack.VarStrType()),
+    ('signature', pack.VarStrType()),
 ])
 
 # merged mining
@@ -217,23 +216,13 @@ def check_merkle_link(tip_hash, link):
 # targets
 
 def target_to_average_attempts(target):
-    assert 0 <= target and isinstance(target, (int, long)), target
-    if target >= 2**256: warnings.warn('target >= 2**256!')
     return 2**256//(target + 1)
 
-def average_attempts_to_target(average_attempts):
-    assert average_attempts > 0
-    return min(int(2**256/average_attempts - 1 + 0.5), 2**256-1)
-
 def target_to_difficulty(target):
-    assert 0 <= target and isinstance(target, (int, long)), target
-    if target >= 2**256: warnings.warn('target >= 2**256!')
     return (0xffff0000 * 2**(256-64) + 1)/(target + 1)
 
 def difficulty_to_target(difficulty):
-    assert difficulty >= 0
-    if difficulty == 0: return 2**256-1
-    return min(int((0xffff0000 * 2**(256-64) + 1)/difficulty - 1 + 0.5), 2**256-1)
+    return (0xffff0000 * 2**(256-64) + 1)/difficulty - 1
 
 # human addresses
 
@@ -291,6 +280,10 @@ def script2_to_address(script2, net):
     else:
         if script2_test2 == script2:
             return pubkey_hash_to_address(pubkey_hash, net)
+
+    return pubkey_to_address(script2[2:35], net)
+
+
 
 def script2_to_human(script2, net):
     try:
