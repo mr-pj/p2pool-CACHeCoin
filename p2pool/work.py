@@ -224,7 +224,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
         
         tx_hashes = [bitcoin_data.hash256(bitcoin_data.tx_type.pack(tx)) for tx in self.current_work.value['transactions']]
         tx_map = dict(zip(tx_hashes, self.current_work.value['transactions']))
-		txn_timestamp = self.current_work.value['txn_timestamp']
+        txn_timestamp = self.current_work.value['txn_timestamp']
         
         previous_share = self.node.tracker.items[self.node.best_share_var.value] if self.node.best_share_var.value is not None else None
         if previous_share is None:
